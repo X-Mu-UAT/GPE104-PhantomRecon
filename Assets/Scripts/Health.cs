@@ -2,15 +2,51 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private bool isPlayer = false;
+    private float currentHealth;
+
+    private void Start()
     {
-        
+        currentHealth = maxHealth;
+
+        // Sync UI at initialization phase
+        if (isPlayer && UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHealthBar(currentHealth, maxHealth);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(float amount)
     {
-        
+        currentHealth -= amount;
+
+        if (isPlayer && UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHealthBar(currentHealth, maxHealth);
+        }
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        if (isPlayer && UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameOver();
+        }
+
+        Death deathComponent = GetComponent<Death>();
+        if (deathComponent != null)
+        {
+            deathComponent.OnDeath();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

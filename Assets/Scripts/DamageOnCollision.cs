@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class DamageOnCollision : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private float collisionDamge = 100f;// Instant kill on collision, can be adjusted for more nuanced damage if desired
+   
+    private void OnCollisionEnter(Collision collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Check for component presence safely without errors
+        Health health = collision.gameObject.GetComponent<Health>();
+        if (health != null)
+        {
+            health.TakeDamage(collisionDamge);
+        }
     }
 }

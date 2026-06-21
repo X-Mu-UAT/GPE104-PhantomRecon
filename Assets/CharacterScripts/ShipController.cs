@@ -8,9 +8,9 @@ public class ShipController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    // Update is called once per framenjl
     void Update()
     {
-        
+      
     }
 }
